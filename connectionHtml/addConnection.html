@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Add Connection</title>
+    <style>
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* height:100vh; */
+      }
+      .form-container {
+        /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
+        padding: 4rem 2rem;
+        display: flex;
+        justify-content: center;
+        width:100%;
+        max-width: 600px;
+      }
+
+      .form-item-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+      }
+
+      .form-item-container label {
+        margin-bottom: 6px;
+        align-self: flex-start;
+        margin-left: -6px;
+      }
+
+      .button-container{
+        display: flex;
+        justify-content: center;
+      }
+
+      .button {
+        background-color: #8ec5fc;
+        background-image: linear-gradient(62deg, #8ec5fc 0%, #e0c3fc 100%);
+        color:#fff;
+        font-weight: 600;
+        padding:8px 32px;
+        border: none;
+        border-radius: 16px;
+        text-align: center;
+        margin-top: 16px;
+        cursor: pointer;
+      }
+
+      form input{
+        padding:8px 8px;
+        border-radius: 4px;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body class="container">
+    <div class="form-container">
+      <form>
+        <div class="form-item-container">
+          <label for="nickname">Nickname:</label>
+          <input type="text" name="nickname" id="nickname" /><br />
+        </div>
+        <div class="form-item-container">
+          <label for="connection-name">Google connection Name:</label>
+          <input type="text" name="connection-name" id="connection-name" /><br />
+        </div>
+        <div class="form-item-container">
+          <label for="username">Username:</label>
+          <input type="text" name="username" id="username" /><br />
+        </div>
+        <div class="form-item-container">
+          <label for="password">Password:</label>
+          <input type="password" name="password" id="password" /><br />
+        </div>
+        <div class='button-container'><button class='button' type="button" onclick="submitForm()">Submit</button></div>
+      </form>
+    </div>
+    <script>
+      function submitForm() {
+        google.script.run.withSuccessHandler(closeDialog).addConnection(document.forms[0]);
+      }
+      function closeDialog() {
+        google.script.host.close();
+      }
+    </script>
+  </body>
+</html>

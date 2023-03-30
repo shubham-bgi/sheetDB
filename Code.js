@@ -5,27 +5,27 @@ function onInstall(e) {
 function onOpen(e) {
   const ui = SpreadsheetApp.getUi()
     .createMenu('Sheet DB')
-    .addItem('Add Connection', 'getUserInputAddConnection');
+    .addItem('Add Connection', 'getAddConnection');
     const configs = getConfig();
     if(configs && Object.keys(configs).length !== 0) {
       ui
-      .addItem('Edit Connection', `run()`)
-      .addItem('Delete Connection', `getUserInputDeleteConnection()`)
-      .addItem('Run', `run()`);
+      .addItem('Edit Connection', `getEditConnection`)
+      .addItem('Delete Connection', `getDeleteConnection`)
+      .addItem('Run Query', `getRunQuery`);
     }
     ui.addToUi();
 }
 
-function getUserInputAddConnection() {
-  var html = HtmlService.createHtmlOutputFromFile('addConnection.html').setWidth(400).setHeight(300);
+function getAddConnection() {
+  var html = HtmlService.createHtmlOutputFromFile('connectionHtml/addConnection.html').setWidth(600).setHeight(600);
   SpreadsheetApp.getUi().showModalDialog(html, 'Enter Connection Details');
 }
 
-function getUserInputEditConnection() {
+function getEditConnection() {
   var html = HtmlService.createHtmlOutputFromFile('editConnection.html').setWidth(400).setHeight(300);
   SpreadsheetApp.getUi().showModalDialog(html, 'Edit Connection Details');
 }
-function getUserInputDeleteConnection(nickname) {
+function getDeleteConnection() {
   var template = HtmlService.createTemplateFromFile('deleteConnection.html');
   template.nickname = nickname;
   let html = template.evaluate().getContent();
@@ -37,8 +37,6 @@ function addDropDown() {
 }
 function run(nickname) {
   try {
-    console.log(nickname);
-    return;
     const conn = getConnection(nickname);
 
     const start = new Date();
