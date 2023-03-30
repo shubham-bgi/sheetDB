@@ -17,23 +17,23 @@ function onOpen(e) {
 }
 
 function getAddConnection() {
-  var html = HtmlService.createHtmlOutputFromFile('connectionHtml/addConnection.html').setWidth(600).setHeight(600);
+  var html = HtmlService.createHtmlOutputFromFile('html/addConnection').setWidth(600).setHeight(600);
   SpreadsheetApp.getUi().showModalDialog(html, 'Enter Connection Details');
 }
 
 function getEditConnection() {
-  var html = HtmlService.createHtmlOutputFromFile('editConnection.html').setWidth(400).setHeight(300);
+  var html = HtmlService.createHtmlOutputFromFile('html/editConnection.html').setWidth(400).setHeight(300);
   SpreadsheetApp.getUi().showModalDialog(html, 'Edit Connection Details');
 }
 function getDeleteConnection() {
-  var template = HtmlService.createTemplateFromFile('deleteConnection.html');
+  var template = HtmlService.createTemplateFromFile('html/deleteConnection.html');
   template.nickname = nickname;
   let html = template.evaluate().getContent();
   SpreadsheetApp.getUi().showModalDialog(html, 'Delete Connection');
 }
 
-function addDropDown() { 
-  
+function getRunQuery() {
+  SpreadsheetApp.getUi().showSidebar()
 }
 function run(nickname) {
   try {
