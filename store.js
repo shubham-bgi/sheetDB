@@ -1,9 +1,20 @@
 function storeConfig(config) {
-  var userProperties = PropertiesService.getUserProperties();
+  let userProperties = PropertiesService.getUserProperties();
   userProperties.setProperty(config.nickname, JSON.stringify(config));
 }
 
-function getAllConfig() {
-  var userProperties = PropertiesService.getUserProperties();
+function getConfig(nickname) {
+  let userProperties = PropertiesService.getUserProperties();
+  if(nickname) {
+    return userProperties.getProperty(nickname);
+  }
+  return userProperties.getProperties();
+}
+
+function getConfig(nickname) {
+  let userProperties = PropertiesService.getUserProperties();
+  if(nickname) {
+    return userProperties.getProperty(nickname);
+  }
   return userProperties.getProperties();
 }

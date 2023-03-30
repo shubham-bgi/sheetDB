@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Delete Connection Confirmation</title>
+    <style>
+      #message {
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+      #buttons {
+        display: flex;
+        justify-content: space-around;
+      }
+      #delete {
+        background-color: red;
+        color: white;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+      }
+      #cancel {
+        background-color: #f1f1f1;
+        color: black;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="message">Are you sure you want to delete <?= nickname ?> connection?</div>
+    <div id="buttons">
+      <button id="delete" onclick="deleteConnection()">Delete</button>
+      <button id="cancel" onclick="google.script.host.close()">Cancel</button>
+    </div>
+    
+    <script>
+      function deleteConnection() {
+        google.script.run.deleteConnection();
+        google.script.host.close();
+      }
+    </script>
+  </body>
+</html>
