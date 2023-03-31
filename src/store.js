@@ -1,13 +1,30 @@
-function storeConfig(config) {
+const savedProperties = {
+  connections: "connections"
+};
+function storeAddConnection(config) {
+  let obj = {};
+  obj[config.nickname] = config;
   let userProperties = PropertiesService.getUserProperties();
-  
-  userProperties.setProperty(config.nickname, JSON.stringify(config));
+  let connections = userProperties.getProperty(savedProperties.connections);
+  if (!connections) {
+    userProperties.setProperty(
+      savedProperties.connections,
+      JSON.stringify(obj)
+    );
+    return;
+  }
+  connections = JSON.parse(connections);
+  connections = { ...connections, ...obj };
+  userProperties.setProperty(
+    savedProperties.connections,
+    JSON.stringify(connections)
+  );
 }
 
-function getConfig(nickname) {
+function storeGetConnection(nickname) {
   let userProperties = PropertiesService.getUserProperties();
-  if(nickname) {
-    return JSON.parse(userProperties.getProperty(nickname));
-  }
-  return userProperties.getProperties();
+  let connections = userProperties.getProperty(savedProperties.connections);
+  connections = JSON.parse(connections);
+  if (nickname) return connections[nickname];
+  return connections;
 }

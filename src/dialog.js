@@ -13,21 +13,21 @@ function getEditConnection() {
 }
 
 function getDeleteConnection() {
-  let template = HtmlService.createTemplateFromFile(
-    "html/deleteConnection"
-  );
+  let template = HtmlService.createTemplateFromFile("html/deleteConnection");
   template.nickname = nickname;
   let html = template.evaluate().getContent();
   SpreadsheetApp.getUi().showModalDialog(html, "Delete Connection");
 }
 
 function getRunQuery() {
-    // let html = HtmlService.createHtmlOutputFromFile("html/runQuery");
-    let htmlTemplate = HtmlService.createTemplateFromFile("html/runQuery");
-    const configs = getConfig();
-    const nickname = Object.keys(configs);
-    htmlTemplate.data = nickname;
-    var html = htmlTemplate.evaluate().setSandboxMode(HtmlService.SandboxMode.IFRAME)
-        .setTitle('sample');
-    SpreadsheetApp.getUi().showSidebar(html)
-  }
+  // let html = HtmlService.createHtmlOutputFromFile("html/runQuery");
+  let htmlTemplate = HtmlService.createTemplateFromFile("html/runQuery");
+  const configs = storeGetConnection();
+  const nickname = Object.keys(configs);
+  htmlTemplate.data = nickname;
+  var html = htmlTemplate
+    .evaluate()
+    .setSandboxMode(HtmlService.SandboxMode.IFRAME)
+    .setTitle("sample");
+  SpreadsheetApp.getUi().showSidebar(html);
+}

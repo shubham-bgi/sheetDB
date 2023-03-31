@@ -1,4 +1,7 @@
 {
+  "scripts": {
+    "format": "prettier --write \"src/*.js\""
+  },
   "dependencies": {
     "@types/google-apps-script": "^1.0.59"
   }

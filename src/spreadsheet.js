@@ -17,17 +17,17 @@ function runQuery(nickname, query) {
 
     const end = new Date();
 
-    console.log('Time elapsed: %sms', end - start);
+    console.log("Time elapsed: %sms", end - start);
   } catch (err) {
     // TODO(developer) - Handle exception from the API
-    console.log('Failed with an error %s', err.message);
+    console.log("Failed with an error %s", err.message);
   }
 }
 
 function setData(results) {
-    let outputSheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet();
-    setHeaders(outputSheet, results);
-    setRows(outputSheet, results);
+  let outputSheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet();
+  setHeaders(outputSheet, results);
+  setRows(outputSheet, results);
 }
 
 function setHeaders(sheet, results) {
@@ -37,7 +37,7 @@ function setHeaders(sheet, results) {
   for (var i = 1; i <= numCols; i++) {
     headers.push(metaData.getColumnName(i));
   }
-  sheet.getRange(1, 1, 1, headers.length).setValues([headers])
+  sheet.getRange(1, 1, 1, headers.length).setValues([headers]);
 }
 
 function setRows(sheet, results) {
@@ -50,5 +50,5 @@ function setRows(sheet, results) {
     }
     rows.push(row);
   }
-  sheet.getRange(2, 1, rows.length, numCols).setValues(rows)
+  sheet.getRange(2, 1, rows.length, numCols).setValues(rows);
 }
