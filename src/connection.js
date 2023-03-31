@@ -11,6 +11,7 @@ function addConnection(config) {
 function getConnection(nickname) {
   const config = getConfig(nickname);
   try {
+    console.log(config.url);
     const conn = connectgoogleSQL(config.url, config.username, config.password);
     return conn;
   } catch (err) {
@@ -23,5 +24,6 @@ function connectSQL(url, username, password) {
 }
 
 function connectgoogleSQL(url, username, password) {
+  console.log(url, username, password);
   return Jdbc.getCloudSqlConnection(url, username, password);
 }

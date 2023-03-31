@@ -1,27 +1,34 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <base target="_top">
-  </head>
-  <body>
-      <form>
+
+<head>
+  <base target="_top">
+</head>
+
+<body>
+  <form>
     <label for="nickname">Nickname:</label>
-    <input type="text" name="nickname" id="nickname"><br>
+    <input type="text" name="nickname" id="nickname">
+    <br>
     <label for="connection-name">Google connection Name:</label>
-    <input type="text" name="connection-name" id="connection-name"><br>
+    <input type="text" name="connection-name" id="connection-name">
+    <br>
     <label for="username">Username:</label>
-    <input type="text" name="username" id="username"><br>
+    <input type="text" name="username" id="username">
+    <br>
     <label for="password">Password:</label>
-    <input type="password" name="password" id="password"><br>
+    <input type="password" name="password" id="password">
+    <br>
     <input type="button" value="Run" onclick="submitForm()">
   </form>
-  	<script>
-		function submitForm() {
-			google.script.run.withSuccessHandler(closeDialog).addConnection(document.forms[0]);
-		}
-		function closeDialog() {
-			google.script.host.close();
-		}
-	</script>
-  </body>
+  <script>
+    function submitForm() {
+      google.script.run.withSuccessHandler(closeDialog).addConnection(document.forms[0]);
+    }
+    function closeDialog() {
+      google.script.host.close();
+    }
+  </script>
+</body>
+
 </html>
