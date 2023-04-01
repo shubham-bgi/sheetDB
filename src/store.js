@@ -1,6 +1,7 @@
 const savedProperties = {
   connections: "connections"
 };
+
 function storeAddConnection(config) {
   let obj = {};
   obj[config.nickname] = config;

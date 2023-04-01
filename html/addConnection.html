@@ -2,87 +2,157 @@
 <html>
 
 <head>
-  <title>Add Connection</title>
   <style>
-    .container {
-      display: flex;
-      /* justify-content: center; */
-      /* align-items: center; */
-      /* height:100vh; */
-      font-family: Arial, Helvetica, sans-serif;
-    }
-
+    /* Container for the entire form */
     .form-container {
-      /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
-      padding: 4rem 2rem;
-      display: flex;
-      /* justify-content: center; */
-      width: 100%;
-      max-width: 600px;
-      font-family: Arial, Helvetica, sans-serif;
-    }
-
-    .form-item-container {
       display: flex;
       flex-direction: column;
-      width: 100%;
-      /* align-items: center; */
+      padding: 10px;
+      justify-content: space-between;
+      /* width: 400px; */
+      /* background-color: #f2f2f2; */
+      /* border: 1px solid #ccc;
+      border-radius: 5px; */
     }
 
-    .form-item-container label {
-      margin-bottom: 6px;
-      align-self: flex-start;
-      margin-left: -6px;
-    }
-
-    .button-container {
+    /* Style for each form item container */
+    .form-item-container {
       display: flex;
-      justify-content: center;
+      flex-direction: row;
+      margin-bottom: 20px;
+      align-items: center;
     }
 
-    .button {
-      background-color: #8ec5fc;
-      background-image: linear-gradient(62deg, #8ec5fc 0%, #e0c3fc 100%);
-      color: #fff;
-      font-weight: 600;
-      padding: 8px 32px;
-      border: none;
-      border-radius: 16px;
-      text-align: center;
-      margin-top: 16px;
-      cursor: pointer;
-      align-items: center
+    /* Style for labels */
+    label {
+      /* width: 120px; */
+      margin-right: 10px;
+      text-align: left;
+      font-family: Arial, Helvetica, sans-serif;
+      white-space: nowrap;
+      color: #373737;
     }
 
-    form input {
-      padding: 8px 8px;
-      border-radius: 4px;
+    /* Style for input fields */
+    input[type="text"],
+    input[type="password"] {
       width: 100%;
+      padding: 5px;
+      border-radius: 3px;
+      border: 1px solid #aeaeae;
+      font-size: 16px;
+      margin-right: 15px;
+    }
+
+    /* Style for checkboxes */
+    input[type="checkbox"] {
+      margin-right: 10px;
+      transform: scale(1.5);
+      accent-color: #0F9D58;
+      /* filter: hue-rotate(190deg) brightness(1.7); */
+    }
+
+    /* Style for checkbox when it's checked */
+    input[type="checkbox"]:checked {
+      /* content: "\2713"; */
+      /* Checkmark symbol */
+      /* color: #0F9D58; */
+      background-color: #0F9D58 !important;
+      /* Color of checkmark */
+      /* font-size: 14px; */
+      /* Size of checkmark */
+    }
+
+    /* Style for button container */
+    .button-container {
+      display: inline-block;
+      margin-top: 15px;
+    }
+
+    /* Style for test button */
+    .button-test {
+      background-color: #0F9D58;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      width: 100px;
+      cursor: pointer;
+      float: left;
+    }
+
+    /* Style for cancel button */
+    .button-cancel {
+      background-color: #dff5df;
+      color: #0F9D58;
+      border: 1px solid #0F9D58;
+      padding: 10px 20px;
+      border-radius: 5px;
+      width: 100px;
+      cursor: pointer;
+      float: right;
+      margin-right: 15px;
+    }
+
+    /* Style for finish button */
+    .button-finish {
+      background-color: #0F9D58;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      width: 100px;
+      cursor: pointer;
+      float: right;
+    }
+
+
+    /* Clearfix for button container */
+    .button-container::after {
+      content: "";
+      clear: both;
+      display: table;
     }
   </style>
 </head>
 
 <body class="container">
-    <form class="form-container">
-      <div class="form-item-container">
-        <label for="nickname">Nickname:</label>
-        <input type="text" name="nickname" id="nickname" /><br />
-      </div>
-      <div class="form-item-container">
-        <label for="connection-name">Google connection Name:</label>
-        <input type="text" name="connection-name" id="connection-name" /><br />
-      </div>
-      <div class="form-item-container">
-        <label for="username">Username:</label>
-        <input type="text" name="username" id="username" /><br />
-      </div>
-      <div class="form-item-container">
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password" /><br />
-      </div>
-      <div class='button-container'><button class='button' type="button" onclick="submitForm()">Submit</button></div>
-    </form>
+  <form class="form-container">
+    <div class="form-item-container">
+      <label for="connection-name">Connection Name:</label>
+      <input type="text" name="connection-name" id="connection-name" /><br />
+    </div>
+    <div class="form-item-container">
+      <label for="username">Username:</label>
+      <input type="text" name="username" id="username" />
+    <!-- </div>
+    <div class="form-item-container"> -->
+      <label for="nickname">Nickname:</label>
+      <input type="text" name="nickname" id="nickname" /><br />
+    </div>
+    <div class="form-item-container">
+      <label for="password">Password:</label>
+      <input type="password" name="password" id="password" /><br />
+    <!-- </div>
+    <div class="form-item-container"> -->
+      <input type="checkbox" id="save-password" name="save-password" value="yes" checked>
+      <label for="save-password">Save password on sheet DB server</label><br />
+    </div>
+    <div class="form-item-container">
+      <input type="checkbox" id="start-editor" name="start-editor" value="yes" checked>
+      <label for="start-editor">Open query editor after finish</label><br />
+    </div>
+    <div class='button-container'>
+      <button class='button-test' type="button" onclick="test()">Test</button>
+      <button class='button-finish' type="button" onclick="submitForm()">Finish</button>
+      <button class='button-cancel' type="button" onclick="closeDialog()">Cancel</button>
+
+    </div>
+  </form>
   <script>
+    function test() {
+      google.script.host.close();
+    }
     function submitForm() {
       google.script.run.withSuccessHandler(closeDialog).addConnection(document.forms[0]);
     }

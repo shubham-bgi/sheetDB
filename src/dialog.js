@@ -1,7 +1,7 @@
 function getAddConnection() {
   let html = HtmlService.createHtmlOutputFromFile("html/addConnection")
     .setWidth(600)
-    .setHeight(600);
+    .setHeight(280);
   SpreadsheetApp.getUi().showModalDialog(html, "Enter Connection Details");
 }
 

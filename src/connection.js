@@ -1,4 +1,6 @@
 function addConnection(config) {
+  console.log(config);
+  return;
   config.url = "jdbc:google:mysql://" + config["connection-name"];
   try {
     const conn = connectgoogleSQL(config.url, config.username, config.password);
