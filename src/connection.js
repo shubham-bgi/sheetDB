@@ -1,29 +1,39 @@
 function addConnection(config) {
-  console.log(config);
-  return;
-  config.url = "jdbc:google:mysql://" + config["connection-name"];
+  config.url = getUrl(config);
+  const key = checkKeys(config, ['connectionName', 'username', 'nickname']);
+  if(key) return key;
+  // storeAddConnection(config);
+  onOpen();
+}
+function testConnection(config) {
+  config.url = getUrl(config);
+  const key = checkKeys(config, ['connectionName', 'username', 'password']);
+  if(key) return key;
   try {
-    const conn = connectgoogleSQL(config.url, config.username, config.password);
-    storeAddConnection(config);
+    const conn = Jdbc.getCloudSqlConnection(
+      config.url,
+      config.username,
+      config.password
+    );
+    return true;
   } catch (err) {
     console.log("Failed with an error %s", err.message);
+    return false;
   }
 }
-
+function getUrl(config) {
+  return "jdbc:google:mysql://" + config.connectionName;
+}
 function getConnection(nickname) {
   const config = storeGetConnection(nickname);
   try {
-    const conn = connectgoogleSQL(config.url, config.username, config.password);
+    const conn = Jdbc.getCloudSqlConnection(
+      config.url,
+      config.username,
+      config.password
+    );
     return conn;
   } catch (err) {
     console.log("Failed with an error %s", err.message);
   }
-}
-
-function connectSQL(url, username, password) {
-  return Jdbc.getConnection(url, username, password);
-}
-
-function connectgoogleSQL(url, username, password) {
-  return Jdbc.getCloudSqlConnection(url, username, password);
 }

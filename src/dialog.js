@@ -20,7 +20,6 @@ function getDeleteConnection() {
 }
 
 function getRunQuery() {
-  // let html = HtmlService.createHtmlOutputFromFile("html/runQuery");
   let htmlTemplate = HtmlService.createTemplateFromFile("html/runQuery");
   const configs = storeGetConnection();
   const nickname = Object.keys(configs);
@@ -28,6 +27,6 @@ function getRunQuery() {
   var html = htmlTemplate
     .evaluate()
     .setSandboxMode(HtmlService.SandboxMode.IFRAME)
-    .setTitle("sample");
+    .setTitle("Run Query");
   SpreadsheetApp.getUi().showSidebar(html);
 }

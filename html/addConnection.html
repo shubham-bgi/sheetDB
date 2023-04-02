@@ -19,7 +19,7 @@
     .form-item-container {
       display: flex;
       flex-direction: row;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       align-items: center;
     }
 
@@ -31,6 +31,8 @@
       font-family: Arial, Helvetica, sans-serif;
       white-space: nowrap;
       color: #373737;
+      font-size: 14px;
+      align-items: center;
     }
 
     /* Style for input fields */
@@ -40,14 +42,14 @@
       padding: 5px;
       border-radius: 3px;
       border: 1px solid #aeaeae;
-      font-size: 16px;
+      font-size: 14px;
       margin-right: 15px;
     }
 
     /* Style for checkboxes */
     input[type="checkbox"] {
       margin-right: 10px;
-      transform: scale(1.5);
+      transform: scale(1.2);
       accent-color: #0F9D58;
       /* filter: hue-rotate(190deg) brightness(1.7); */
     }
@@ -67,6 +69,7 @@
     .button-container {
       display: inline-block;
       margin-top: 15px;
+      align-items: center;
     }
 
     /* Style for test button */
@@ -79,6 +82,7 @@
       width: 100px;
       cursor: pointer;
       float: left;
+      margin-right: 15px;
     }
 
     /* Style for cancel button */
@@ -106,12 +110,32 @@
       float: right;
     }
 
-
     /* Clearfix for button container */
     .button-container::after {
       content: "";
       clear: both;
       display: table;
+    }
+
+    .spinner {
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #0F9D58;
+      border-radius: 50%;
+      width: 14px;
+      height: 14px;
+      animation: spin 2s linear infinite;
+      display: none;
+      margin-left: 100px;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
     }
   </style>
 </head>
@@ -119,42 +143,87 @@
 <body class="container">
   <form class="form-container">
     <div class="form-item-container">
-      <label for="connection-name">Connection Name:</label>
-      <input type="text" name="connection-name" id="connection-name" /><br />
+      <label for="connection-name">Connection Name</label>
+      <input type="text" name="connectionName" id="connection-name" /><br />
     </div>
     <div class="form-item-container">
-      <label for="username">Username:</label>
+      <label for="username">Username</label>
       <input type="text" name="username" id="username" />
-    <!-- </div>
+      <!-- </div>
     <div class="form-item-container"> -->
-      <label for="nickname">Nickname:</label>
+      <label for="nickname">Nickname</label>
       <input type="text" name="nickname" id="nickname" /><br />
     </div>
     <div class="form-item-container">
-      <label for="password">Password:</label>
+      <label for="password">Password</label>
       <input type="password" name="password" id="password" /><br />
-    <!-- </div>
+      <!-- </div>
     <div class="form-item-container"> -->
-      <input type="checkbox" id="save-password" name="save-password" value="yes" checked>
+      <input type="checkbox" id="save-password" name="savePassword" value="yes" checked>
       <label for="save-password">Save password on sheet DB server</label><br />
     </div>
     <div class="form-item-container">
-      <input type="checkbox" id="start-editor" name="start-editor" value="yes" checked>
+      <input type="checkbox" id="start-editor" name="startEditor" value="yes" checked>
       <label for="start-editor">Open query editor after finish</label><br />
     </div>
     <div class='button-container'>
-      <button class='button-test' type="button" onclick="test()">Test</button>
+      <button class='button-test' type="button" onclick="runTest()">Test</button>
+      <div class="spinner" id="spinner"></div>
+      <label for="test-connection" id="test-connection"></label>
       <button class='button-finish' type="button" onclick="submitForm()">Finish</button>
       <button class='button-cancel' type="button" onclick="closeDialog()">Cancel</button>
 
     </div>
   </form>
   <script>
-    function test() {
-      google.script.host.close();
+    let savePasswordCheckbox = document.getElementById("save-password");
+    let passwordInput = document.getElementById("password");
+    let spinner = document.getElementById("spinner");
+    let startEditorCheckbox = document.getElementById("start-editor");
+    let testConnectionLabel = document.getElementById("test-connection");
+
+    savePasswordCheckbox.addEventListener("change", function () {
+      if (savePasswordCheckbox.checked) passwordInput.disabled = false;
+      else passwordInput.disabled = true;
+    });
+
+    function runTest() {
+      testConnectionLabel.textContent = "";
+      spinner.style.display = "block";
+      google.script.run.withSuccessHandler(runTestHandle).testConnection(document.forms[0]);
     }
+    function runTestHandle(conn) {
+      spinner.style.display = "none";
+      if (conn == true) {
+        testConnectionLabel.style.color = "green";
+        testConnectionLabel.textContent = "Successfully Connected!";
+      } else if (conn == false) {
+        testConnectionLabel.style.color = "red";
+        testConnectionLabel.textContent = "Connection Failed!";
+      } else {
+        testConnectionLabel.style.color = "red";
+        testConnectionLabel.textContent = camelCaseToNormal(conn);
+      }
+    }
+    
     function submitForm() {
-      google.script.run.withSuccessHandler(closeDialog).addConnection(document.forms[0]);
+      testConnectionLabel.textContent = "";
+      spinner.style.display = "block";
+      google.script.run.withSuccessHandler(sumbitFormHandle).addConnection(document.forms[0]);
+    }
+    function sumbitFormHandle(res) {
+      spinner.style.display = "none";
+      if(res) {
+        testConnectionLabel.style.color = "red";
+        testConnectionLabel.textContent = camelCaseToNormal(res);
+      } else {
+        if (startEditorCheckbox.checked) google.script.run.withSuccessHandler(google.script.host.close).getRunQuery();
+        else google.script.host.close();
+      }
+    }
+
+    function camelCaseToNormal(str) {
+      return str.replace(/([A-Z])/g, ' $1').replace(/^./, function(str){ return str.toUpperCase(); }) + " Required!";
     }
     function closeDialog() {
       google.script.host.close();
