@@ -3,6 +3,7 @@ function addConnection(config) {
   const key = checkKeys(config, ['connectionName', 'username', 'nickname']);
   if(key) return key;
   // storeAddConnection(config);
+  console.log(config);
   onOpen();
 }
 function testConnection(config) {
