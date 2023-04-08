@@ -197,7 +197,7 @@
       <div class="spinner" id="spinner"></div>
       <label for="test-connection" id="test-connection"></label>
       <button class='button-finish' type="button" onclick="submitForm()">Finish</button>
-      <button class='button-cancel' type="button" onclick="closeDialog()">Cancel</button>
+      <button class='button-cancel' type="button" onclick="google.script.host.close()">Cancel</button>
 
     </div>
   </form>
@@ -250,9 +250,6 @@
 
     function camelCaseToNormal(str) {
       return str.replace(/([A-Z])/g, ' $1').replace(/^./, function (str) { return str.toUpperCase(); }) + " Required!";
-    }
-    function closeDialog() {
-      google.script.host.close();
     }
   </script>
 </body>

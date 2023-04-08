@@ -2,50 +2,86 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <title>Delete Connection Confirmation</title>
   <style>
-    #message {
-      font-weight: bold;
-      margin-bottom: 10px;
+    /* Style for labels */
+    label {
+      /* width: 120px; */
+      margin-right: 10px;
+      text-align: left;
+      font-family: Arial, Helvetica, sans-serif;
+      white-space: nowrap;
+      color: #373737;
+      font-size: 14px;
+      align-items: center;
     }
 
-    #buttons {
+    .buttons {
       display: flex;
       justify-content: space-around;
     }
 
-    #delete {
+    .delete {
       background-color: red;
       color: white;
       border: none;
-      padding: 10px;
+      padding: 10px 20px;
+      border-radius: 5px;
+      width: 100px;
       cursor: pointer;
+      float: right;
     }
 
-    #cancel {
+    .cancel {
       background-color: #f1f1f1;
-      color: black;
-      border: none;
+      color: red;;
+      border: red;;
       padding: 10px;
+      padding: 10px 20px;
+      border-radius: 5px;
+      width: 100px;
       cursor: pointer;
+      float: right;
+      margin-right: 15px;
+
     }
+
+    .drop-down {
+      font-size: 14px;
+      padding: 5px;
+      border-radius: 3px;
+      border: 1px solid #aeaeae;
+      width: 800px;
+      margin-right: 15px;
+    }
+
   </style>
 </head>
 
 <body>
-  <div id="message">Are you sure you want to delete
-    <?= nickname ?> connection?
+  <label for="nickname">Select a connection to delete?</label>
+  <div class="drop-down">
+    <select name="nickname" id="nickname"></select>
   </div>
-  <div id="buttons">
+  <div class="button-container" id="buttons">
     <button id="delete" onclick="deleteConnection()">Delete</button>
     <button id="cancel" onclick="google.script.host.close()">Cancel</button>
   </div>
-
   <script>
+    var data = <?!= JSON.stringify(nicknames) ?>;
+    console.log(nicknames);
+    function initialize() {
+      const nicknameDropDown = document.getElementById("nickname");
+      console.log(nicknames);
+      for (let key in nicknames) {
+        let option = document.createElement("option");
+        option.setAttribute('value', nicknames[key]);
+        option.appendChild(document.createTextNode(nicknames[key]))
+        nicknameDropDown.appendChild(option);
+      }
+    }
+    window.onload = initialize;
     function deleteConnection() {
-      google.script.run.deleteConnection();
-      google.script.host.close();
+      google.script.run.withSuccessHandler(google.script.host.close).deleteConnection();
     }
   </script>
 </body>

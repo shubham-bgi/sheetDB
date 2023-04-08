@@ -14,16 +14,14 @@ function getEditConnection() {
 
 function getDeleteConnection() {
   let template = HtmlService.createTemplateFromFile("html/deleteConnection");
-  template.nickname = nickname;
+  template.nicknames = getNickNames();
   let html = template.evaluate().getContent();
   SpreadsheetApp.getUi().showModalDialog(html, "Delete Connection");
 }
 
 function getRunQuery() {
   let htmlTemplate = HtmlService.createTemplateFromFile("html/runQuery");
-  const configs = storeGetConnection();
-  const nickname = Object.keys(configs);
-  htmlTemplate.data = nickname;
+  htmlTemplate.nicknames = getNickNames();
   var html = htmlTemplate
     .evaluate()
     .setSandboxMode(HtmlService.SandboxMode.IFRAME)

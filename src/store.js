@@ -29,3 +29,8 @@ function storeGetConnection(nickname) {
   if (nickname) return connections[nickname];
   return connections;
 }
+
+function getNickNames() {
+  const configs = storeGetConnection();
+  return Object.keys(configs);
+}

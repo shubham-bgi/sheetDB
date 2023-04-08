@@ -38,3 +38,7 @@ function getConnection(nickname) {
     console.log("Failed with an error %s", err.message);
   }
 }
+
+function deleteConnection(nickname) {
+console.log(nickname);
+}
