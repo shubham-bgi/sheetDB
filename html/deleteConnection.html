@@ -13,11 +13,14 @@
       color: #373737;
       font-size: 14px;
       align-items: center;
+      margin-bottom: 10px;
     }
 
-    .buttons {
-      display: flex;
-      justify-content: space-around;
+    /* Style for button container */
+    .button-container {
+      display: inline-block;
+      margin-top: 15px;
+      align-items: center;
     }
 
     .delete {
@@ -50,24 +53,24 @@
       padding: 5px;
       border-radius: 3px;
       border: 1px solid #aeaeae;
-      width: 800px;
+      width: 200px;
       margin-right: 15px;
+      margin-bottom: 15px;
+      margin-top: 10px;
     }
 
   </style>
 </head>
 
 <body>
-  <label for="nickname">Select a connection to delete?</label>
-  <div class="drop-down">
-    <select name="nickname" id="nickname"></select>
-  </div>
+  <label for="nickname">Select a connection to delete?</label><br />
+  <select class="drop-down" name="nickname" id="nickname"></select><br />
   <div class="button-container" id="buttons">
-    <button id="delete" onclick="deleteConnection()">Delete</button>
-    <button id="cancel" onclick="google.script.host.close()">Cancel</button>
+    <button class="delete" id="delete" onclick="deleteConnection()">Delete</button>
+    <button class="cancel" id="cancel" onclick="google.script.host.close()">Cancel</button>
   </div>
   <script>
-    var data = <?!= JSON.stringify(nicknames) ?>;
+    let nicknames = <?!= JSON.stringify(nicknames) ?>;
     console.log(nicknames);
     function initialize() {
       const nicknameDropDown = document.getElementById("nickname");
@@ -81,7 +84,8 @@
     }
     window.onload = initialize;
     function deleteConnection() {
-      google.script.run.withSuccessHandler(google.script.host.close).deleteConnection();
+      let nickname = document.getElementById("nickname").value;
+      google.script.run.withSuccessHandler(google.script.host.close).deleteConnection(nickname);
     }
   </script>
 </body>

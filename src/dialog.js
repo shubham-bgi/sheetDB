@@ -1,7 +1,7 @@
 function getAddConnection() {
   let html = HtmlService.createHtmlOutputFromFile("html/addConnection")
     .setWidth(600)
-    .setHeight(280);
+    .setHeight(250);
   SpreadsheetApp.getUi().showModalDialog(html, "Enter Connection Details");
 }
 
@@ -14,15 +14,18 @@ function getEditConnection() {
 
 function getDeleteConnection() {
   let template = HtmlService.createTemplateFromFile("html/deleteConnection");
-  template.nicknames = getNickNames();
-  let html = template.evaluate().getContent();
-  SpreadsheetApp.getUi().showModalDialog(html, "Delete Connection");
+  template.nicknames = storeGetNicknames();
+  const html = template.evaluate().getContent();
+  const output = HtmlService.createHtmlOutput(html)
+    .setWidth(250)
+    .setHeight(150);
+  SpreadsheetApp.getUi().showModalDialog(output, "Delete Connection");
 }
 
 function getRunQuery() {
   let htmlTemplate = HtmlService.createTemplateFromFile("html/runQuery");
-  htmlTemplate.nicknames = getNickNames();
-  var html = htmlTemplate
+  htmlTemplate.nicknames = storeGetNicknames();
+  let html = htmlTemplate
     .evaluate()
     .setSandboxMode(HtmlService.SandboxMode.IFRAME)
     .setTitle("Run Query");

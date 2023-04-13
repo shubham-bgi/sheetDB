@@ -10,6 +10,7 @@ function onOpen(e) {
   if (configs && Object.keys(configs).length !== 0) {
     ui.addItem("Edit Connection", `getEditConnection`)
       .addItem("Delete Connection", `getDeleteConnection`)
+      .addSeparator()
       .addItem("Run Query", `getRunQuery`);
   }
   ui.addToUi();

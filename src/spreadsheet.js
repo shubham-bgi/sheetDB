@@ -1,11 +1,12 @@
-function runQuery(nickname, query) {
+function runQuery(form) {
   try {
+    const { nickname, query } = form;
     const conn = getConnection(nickname);
-    console.log(conn);
+    if (!conn) return "Connection Failed! Please check connection details.";
     const start = new Date();
 
     const stmt = conn.createStatement();
-    stmt.setMaxRows(10);
+    stmt.setMaxRows(100);
     const results = stmt.executeQuery(query);
 
     let outputSheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet();
@@ -17,10 +18,12 @@ function runQuery(nickname, query) {
 
     const end = new Date();
 
-    console.log("Time elapsed: %sms", end - start);
+    const timeTook = end - start;
+    console.log("Time elapsed: ms", timeTook);
+    return "Time took : " + timeTook + " ms";
   } catch (err) {
-    // TODO(developer) - Handle exception from the API
     console.log("Failed with an error %s", err.message);
+    return err.message;
   }
 }
 
@@ -34,7 +37,7 @@ function setHeaders(sheet, results) {
   const numCols = results.getMetaData().getColumnCount();
   const metaData = results.getMetaData();
   let headers = [];
-  for (var i = 1; i <= numCols; i++) {
+  for (let i = 1; i <= numCols; i++) {
     headers.push(metaData.getColumnName(i));
   }
   sheet.getRange(1, 1, 1, headers.length).setValues([headers]);

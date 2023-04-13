@@ -1,40 +1,145 @@
 <!DOCTYPE html>
-<script>
-    var nicknames = <?!= JSON.stringify(nicknames) ?>;
-    console.log(nicknames);
-    function initialize() {
-        const nicknameDropDown = document.getElementById("nickname");
-        console.log(nicknames);
-        for (let key in nicknames) {
-            let option = document.createElement("option");
-            option.setAttribute('value', nicknames[key]);
-            option.appendChild(document.createTextNode(nicknames[key]))
-            nicknameDropDown.appendChild(option);
-        }
-    }
-    window.onload = initialize;
-</script>
 <html lang="en">
-    <head>
-        <title>Run Query</title>
-    </head>
-    <body class="container">
-        <div class="drop-down-container">
-            <label for="nickname">Choose a connection</label>
-            <select name="nickname" id="nickname"></select>
+
+<head>
+    <style>
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            justify-content: space-between;
+        }
+
+        .button-container {
+            display: flex;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .button-run {
+            background-color: #0F9D58;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .query {
+            height: 200px;
+        }
+
+        .output {
+            height: 100px;
+        }
+
+        .output:focus {
+            outline: none;
+        }
+
+        textarea {
+            width: 95%;
+            padding: 5px;
+            border-radius: 3px;
+            border: 1px solid #aeaeae;
+            font-size: 14px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .drop-down {
+            font-size: 14px;
+            padding: 5px;
+            border-radius: 3px;
+            border: 1px solid #aeaeae;
+            width: 100%;
+            margin-right: 15px;
+            margin-bottom: 15px;
+            margin-top: 10px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #0F9D58;
+            border-radius: 50%;
+            width: 14px;
+            height: 14px;
+            animation: spin 2s linear infinite;
+            display: none;
+            margin-left: 100px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body class="container">
+        <div>
+            <select class="drop-down" name="nickname" id="nickname"></select><br />
+            <textarea class="query" name="query" id="query" placeholder="Write query..."></textarea><br />
         </div>
-        <div class="form-item-container">
-            <label for="query">Query:</label>
-            <input type="text" name="query" id="query">
-            <br>
+        <div class="radio-container">
+            <div>
+                <input type="radio" name="outputChoice" value="current" checked>
+                <label for="save-password">Output in current sheet</label><br />
+            </div>
+            <div>
+                <input type="radio" name="outputChoice" value="append">
+                <label for="save-password">Append in current sheet</label><br />
+            </div>
+            <div>
+                <input type="radio" name="outputChoice" value="new">
+                <label for="save-password">Output in new sheet</label><br />
+            </div>
         </div>
         <div class="button-container">
-            <button class="button" type="button" onclick="submit()">Run</button>
+            <div class="spinner" id="spinner"></div>
+            <button class="button-run" type="button" onclick="submit()">Run</button>
         </div>
-        <script>
-        function submit() {
-            google.script.run.runQuery(document.getElementById("nickname").value, document.getElementById("query").value);
+        <div>
+        <textarea class="output" id="output" placeholder="Output" readonly></textarea>
+        </div>
+    <script>
+        let nicknames = <?!= JSON.stringify(nicknames) ?>;
+        console.log(nicknames);
+        function initialize() {
+            const nicknameDropDown = document.getElementById("nickname");
+            for (let key in nicknames) {
+                let option = document.createElement("option");
+                option.setAttribute('value', nicknames[key]);
+                option.appendChild(document.createTextNode(nicknames[key]))
+                nicknameDropDown.appendChild(option);
+            }
         }
-        </script>
-    </body>
+        window.onload = initialize;
+        function submit() {
+            const form = {};
+            form.radio = document.querySelector('input[name="outputChoice"]:checked').value;
+            form.nickname = document.getElementById('nickname').value;
+            form.query = document.getElementById('query').value;
+            console.log(form);
+            google.script.run.withSuccessHandler(sumbitHandler).runQuery(form);
+        }
+        function sumbitHandler(output) {
+            let outputBox = document.getElementById("output");
+            outputBox.value = output;
+        }
+        function inverse() {
+            let spinner = document.getElementById("spinner");
+            spinner.style.display = "block";
+        }
+    </script>
+</body>
+
 </html>
