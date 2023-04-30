@@ -47,7 +47,8 @@ function getConnection(nickname, password) {
 }
 
 function deleteConnection(nickname) {
-  console.log(nickname);
+  console.log('Deleted' - nickname);
+  closeSidebar();
   storeDeleteConnection(nickname);
   onOpen();
 }

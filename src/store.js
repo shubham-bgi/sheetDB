@@ -1,6 +1,5 @@
 const savedProperties = {
   connections: "connections",
-  active: "active_",
 };
 const userProperties = PropertiesService.getUserProperties();
 
@@ -32,6 +31,7 @@ function storeGetNicknames() {
 function storeDeleteConnection(nickname) {
   let connections = storeGetConnection();
   delete connections[nickname];
+  console.log('Configs Remaining: ', JSON.stringify(connections));
   userProperties.setProperty(
     savedProperties.connections,
     JSON.stringify(connections)
