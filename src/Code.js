@@ -4,7 +4,7 @@ function onInstall(e) {
 
 function onOpen(e) {
   const ui = SpreadsheetApp.getUi()
-    .createMenu("Sheet DB")
+    .createMenu("SQL sheet")
     .addItem("Add Connection", "getAddConnection");
   const configs = storeGetConnection();
   if (configs && Object.keys(configs).length !== 0) {
