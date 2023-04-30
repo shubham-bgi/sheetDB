@@ -18,6 +18,17 @@
             justify-content: center;
         }
 
+        input[type="text"],
+        input[type="password"] {
+            width: 95%;
+            padding: 5px;
+            border-radius: 3px;
+            border: 1px solid #aeaeae;
+            font-size: 14px;
+            margin-right: 15px;
+            /* margin-bottom: 15px; */
+        }
+
         .button-run {
             background-color: #0F9D58;
             color: white;
@@ -33,7 +44,7 @@
         }
 
         .output {
-            height: 100px;
+            height: 150px;
         }
 
         .output:focus {
@@ -69,7 +80,7 @@
             height: 14px;
             animation: spin 2s linear infinite;
             display: none;
-            margin-left: 100px;
+            margin-left: 10px;
         }
 
         @keyframes spin {
@@ -85,34 +96,42 @@
 </head>
 
 <body class="container">
+    <div>
+        <select class="drop-down" name="nickname" id="nickname" onchange="wetherShowEnterPassword()"></select><br />
+        <input type="password" name="password" id="password" placeholder="password" /><br />
+        <textarea class="query" name="query" id="query" placeholder="Write query..."></textarea><br />
+    </div>
+    <div class="radio-container">
         <div>
-            <select class="drop-down" name="nickname" id="nickname"></select><br />
-            <textarea class="query" name="query" id="query" placeholder="Write query..."></textarea><br />
+            <input type="radio" name="outputChoice" value="current" checked>
+            <label for="save-password">Output in current sheet</label><br />
         </div>
-        <div class="radio-container">
-            <div>
-                <input type="radio" name="outputChoice" value="current" checked>
-                <label for="save-password">Output in current sheet</label><br />
-            </div>
-            <div>
+        <!-- <div>
                 <input type="radio" name="outputChoice" value="append">
                 <label for="save-password">Append in current sheet</label><br />
-            </div>
-            <div>
-                <input type="radio" name="outputChoice" value="new">
-                <label for="save-password">Output in new sheet</label><br />
-            </div>
-        </div>
-        <div class="button-container">
-            <div class="spinner" id="spinner"></div>
-            <button class="button-run" type="button" onclick="submit()">Run</button>
-        </div>
+            </div> -->
         <div>
-        <textarea class="output" id="output" placeholder="Output" readonly></textarea>
+            <input type="radio" name="outputChoice" value="new">
+            <label for="save-password">Output in new sheet</label><br />
         </div>
+    </div>
+    <div class="button-container">
+        <div class="spinner" id="spinner"></div>
+        <button class="button-run" type="button" id="button-run" onclick="submit()">Run</button>
+    </div>
+    <div>
+        <textarea class="output" id="output" placeholder="Output" readonly></textarea>
+    </div>
     <script>
-        let nicknames = <?!= JSON.stringify(nicknames) ?>;
-        console.log(nicknames);
+        let spinner = document.getElementById("spinner");
+        let password = document.getElementById('password');
+        let nickname = document.getElementById('nickname');
+        let buttonRun = document.getElementById('button-run');
+        let outputBox = document.getElementById("output");
+
+        let connections = <?!= JSON.stringify(connections) ?>;
+        console.log(connections);
+        let nicknames = Object.keys(connections)
         function initialize() {
             const nicknameDropDown = document.getElementById("nickname");
             for (let key in nicknames) {
@@ -121,23 +140,41 @@
                 option.appendChild(document.createTextNode(nicknames[key]))
                 nicknameDropDown.appendChild(option);
             }
+            if (connections[nicknames[0]].password) {
+                password.style.display = "none";
+            }
+        }
+        function wetherShowEnterPassword() {
+            console.log(connections[nickname.value])
+            if (connections[nickname.value].password) {
+                password.style.display = "none";
+            } else {
+                password.style.display = "block";
+            }
         }
         window.onload = initialize;
         function submit() {
             const form = {};
-            form.radio = document.querySelector('input[name="outputChoice"]:checked').value;
+            form.outputChoice = document.querySelector('input[name="outputChoice"]:checked').value;
             form.nickname = document.getElementById('nickname').value;
             form.query = document.getElementById('query').value;
-            console.log(form);
+            form.password = document.getElementById('password').value;
+            outputBox.value = 'Runnig the query...';
+            spin(true);
             google.script.run.withSuccessHandler(sumbitHandler).runQuery(form);
         }
         function sumbitHandler(output) {
-            let outputBox = document.getElementById("output");
             outputBox.value = output;
+            spin(false);
         }
-        function inverse() {
-            let spinner = document.getElementById("spinner");
-            spinner.style.display = "block";
+        function spin(shouldSpin) {
+            if (shouldSpin) {
+                spinner.style.display = "block";
+                buttonRun.style.display = "none";
+            } else {
+                spinner.style.display = "none";
+                buttonRun.style.display = "block"
+            }
         }
     </script>
 </body>

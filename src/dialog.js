@@ -24,7 +24,7 @@ function getDeleteConnection() {
 
 function getRunQuery() {
   let htmlTemplate = HtmlService.createTemplateFromFile("html/runQuery");
-  htmlTemplate.nicknames = storeGetNicknames();
+  htmlTemplate.connections = storeGetConnection();
   let html = htmlTemplate
     .evaluate()
     .setSandboxMode(HtmlService.SandboxMode.IFRAME)

@@ -28,8 +28,12 @@ function testConnection(config) {
   }
 }
 
-function getConnection(nickname) {
+function getConnection(nickname, password) {
   const config = storeGetConnection(nickname);
+  if (!config.password && !password) {
+    throw errObj("Please enter the password.");
+  }
+  config.password = config.password || password;
   try {
     return Jdbc.getCloudSqlConnection(
       config.url,

@@ -14,3 +14,7 @@ function getUrl(config) {
       return "jdbc:google:sqlserver://" + config.connectionName;
   }
 }
+
+function errObj(message) {
+  return { message };
+}

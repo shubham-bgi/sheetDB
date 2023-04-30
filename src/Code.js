@@ -8,8 +8,9 @@ function onOpen(e) {
     .addItem("Add Connection", "getAddConnection");
   const configs = storeGetConnection();
   if (configs && Object.keys(configs).length !== 0) {
-    ui.addItem("Edit Connection", `getEditConnection`)
-      .addItem("Delete Connection", `getDeleteConnection`)
+    //TODO: Add edit connection
+    // ui.addItem("Edit Connection", `getEditConnection`)
+    ui.addItem("Delete Connection", `getDeleteConnection`)
       .addSeparator()
       .addItem("Run Query", `getRunQuery`);
   }

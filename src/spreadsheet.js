@@ -1,15 +1,32 @@
 function runQuery(form) {
   try {
-    const { nickname, query } = form;
-    const conn = getConnection(nickname);
-    if (!conn) return "Connection Failed! Please check connection details.";
+    const totalStart = new Date();
+    const { nickname, query, password, outputChoice } = form;
+    console.log(form);
+    if (!query) throw errObj("Oops! Something went wrong. Could you please try entering a valid query?");
+    if (!query.toLowerCase().startsWith("select")) throw errObj("For now, we can only handle select queries.");
+    const conn = getConnection(nickname, password);
+    if (!conn)
+      throw errObj("Connection Failed! Please check connection details.");
     const start = new Date();
 
     const stmt = conn.createStatement();
     stmt.setMaxRows(100);
     const results = stmt.executeQuery(query);
 
-    let outputSheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet();
+    if(!results) throw errObj("No result");
+    if(!results.getMetaData().getColumnCount()) throw errObj("No data received. Use select statements.");
+
+    let outputSheet;
+    switch (outputChoice) {
+      case "current":
+        outputSheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+        outputSheet.getDataRange().clearContent();
+        break;
+      case "new":
+        outputSheet = SpreadsheetApp.getActiveSpreadsheet().insertSheet();
+        break;
+    }
     setHeaders(outputSheet, results);
     setRows(outputSheet, results);
 
@@ -17,11 +34,22 @@ function runQuery(form) {
     stmt.close();
 
     const end = new Date();
+    const totalEnd = new Date();
 
     const timeTook = end - start;
+    const totalTimeTook = totalEnd - totalStart;
     console.log("Time elapsed: ms", timeTook);
-    return "Time took : " + timeTook + " ms";
+    console.log("Tottal Time elapsed: ms", totalTimeTook);
+    return (
+      "Time took by query: " +
+      timeTook +
+      " ms\n" +
+      "Total time took: " +
+      totalTimeTook +
+      " ms"
+    );
   } catch (err) {
+    console.log(err);
     console.log("Failed with an error %s", err.message);
     return err.message;
   }
